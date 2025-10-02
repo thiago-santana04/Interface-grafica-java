@@ -1,2 +1,2 @@
-# Interface-grarfica-java
+# Interface-grafica-java
 Criação de uma interface gráfica básica para validação de dados utilizando Swing
