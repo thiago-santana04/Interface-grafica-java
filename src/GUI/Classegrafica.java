@@ -1,10 +1,14 @@
 package GUI;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JTextField;
 
 public class Classegrafica {
@@ -13,8 +17,10 @@ public class Classegrafica {
 	private JTextField txtNome;
 	private JTextField txtTelefone;
 	private JTextField txtEndereco;
-	private JTextField txtemail;
-	private JTextField txtcpf;
+	private JTextField txtEmail;
+	private JTextField txtCpf;
+	
+	ArrayList <Contato> agenda = new ArrayList<Contato>();
 
 	/**
 	 * Launch the application.
@@ -44,7 +50,7 @@ public class Classegrafica {
 	 */
 	private void initialize() {
 		frmAgenda = new JFrame();
-		frmAgenda.getContentPane().setFont(new Font("Tahoma", Font.ITALIC, 10));
+		frmAgenda.getContentPane().setFont(new Font("Tahoma", Font.ITALIC, 16));
 		frmAgenda.setTitle("Agenda");
 		frmAgenda.setBounds(100, 100, 930, 470);
 		frmAgenda.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,16 +99,73 @@ public class Classegrafica {
 		txtEndereco.setBounds(186, 195, 243, 18);
 		frmAgenda.getContentPane().add(txtEndereco);
 		
-		txtemail = new JTextField();
-		txtemail.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtemail.setColumns(10);
-		txtemail.setBounds(186, 248, 243, 18);
-		frmAgenda.getContentPane().add(txtemail);
+		txtEmail = new JTextField();
+		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(186, 248, 243, 18);
+		frmAgenda.getContentPane().add(txtEmail);
 		
-		txtcpf = new JTextField();
-		txtcpf.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtcpf.setColumns(10);
-		txtcpf.setBounds(186, 300, 243, 18);
-		frmAgenda.getContentPane().add(txtcpf);
+		txtCpf = new JTextField();
+		txtCpf.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtCpf.setColumns(10);
+		txtCpf.setBounds(186, 300, 243, 18);
+		frmAgenda.getContentPane().add(txtCpf);
+		
+		JButton btnNewButton = new JButton("Novo");
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnNewButton.setBounds(654, 92, 95, 39);
+		frmAgenda.getContentPane().add(btnNewButton);
+		
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nome = txtNome.getText();
+				String telefone = txtTelefone.getText();
+				String endereco = txtEndereco.getText();
+				String email = txtEmail.getText();
+				String cpf = txtCpf.getText();
+				Contato c = new Contato(nome, telefone, endereco, email, cpf);
+				agenda.add(c);
+			}
+		});
+		
+		btnSalvar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnSalvar.setBounds(654, 163, 95, 39);
+		frmAgenda.getContentPane().add(btnSalvar);
+		
+		JButton btnSair = new JButton("Sair");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);			}
+		});
+		
+		btnSair.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnSair.setBounds(654, 229, 95, 39);
+		frmAgenda.getContentPane().add(btnSair);
+		
+		JButton btnPrimeiro = new JButton("<<");
+		btnPrimeiro.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnPrimeiro.setBounds(113, 358, 95, 39);
+		frmAgenda.getContentPane().add(btnPrimeiro);
+		
+		JButton btnAnterior = new JButton("<");
+		btnAnterior.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnAnterior.setBounds(240, 358, 95, 39);
+		frmAgenda.getContentPane().add(btnAnterior);
+		
+		JButton btnProximo = new JButton(">");
+		btnProximo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnProximo.setBounds(373, 358, 95, 39);
+		frmAgenda.getContentPane().add(btnProximo);
+		
+		JButton btnUltimo = new JButton(">>");
+		btnUltimo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnUltimo.setBounds(506, 358, 95, 39);
+		frmAgenda.getContentPane().add(btnUltimo);
+		
+		JLabel lblNewLabel_1 = new JLabel("Agenda de contatos");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 21));
+		lblNewLabel_1.setBounds(358, 24, 243, 32);
+		frmAgenda.getContentPane().add(lblNewLabel_1);
 	}
 }
