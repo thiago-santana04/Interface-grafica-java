@@ -22,6 +22,9 @@ public class Classegrafica {
 	
 	ArrayList <Contato> agenda = new ArrayList<Contato>();
 
+	//Indica a posição do contato visível na interface
+	private static int posicao = 0;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -45,6 +48,17 @@ public class Classegrafica {
 		initialize();
 	}
 
+	
+	//Mostrar contatos
+	private void mostrarContato() {
+		Contato c = agenda.get(posicao);
+		txtNome.setText(c.getNome());
+		txtTelefone.setText(c.getTelefone());
+		txtEndereco.setText(c.getEndereco());
+		txtEmail.setText(c.getEmail());
+		txtCpf.setText(c.getCpf());
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -111,17 +125,26 @@ public class Classegrafica {
 		txtCpf.setBounds(186, 300, 243, 18);
 		frmAgenda.getContentPane().add(txtCpf);
 		
-		JButton btnNewButton = new JButton("Novo");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnNewButton.setBounds(654, 92, 95, 39);
-		frmAgenda.getContentPane().add(btnNewButton);
+		JButton btnNovo = new JButton("Novo");
+		btnNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtNome.setText("");
+				txtTelefone.setText("");
+				txtEndereco.setText("");
+				txtEmail.setText("");
+				txtCpf.setText("");
+			}
+		});
+		btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnNovo.setBounds(654, 92, 95, 39);
+		frmAgenda.getContentPane().add(btnNovo);
 		
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nome = txtNome.getText();
 				String telefone = txtTelefone.getText();
-				String endereco = txtEndereco.getText();
+				String endereco = txtEndereco.getText(); 
 				String email = txtEmail.getText();
 				String cpf = txtCpf.getText();
 				Contato c = new Contato(nome, telefone, endereco, email, cpf);
@@ -144,21 +167,49 @@ public class Classegrafica {
 		frmAgenda.getContentPane().add(btnSair);
 		
 		JButton btnPrimeiro = new JButton("<<");
+		btnPrimeiro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				posicao = 0;
+				mostrarContato();
+			}
+		});
+		
 		btnPrimeiro.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnPrimeiro.setBounds(113, 358, 95, 39);
 		frmAgenda.getContentPane().add(btnPrimeiro);
 		
 		JButton btnAnterior = new JButton("<");
+		btnAnterior.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				posicao--;
+				mostrarContato();
+			}
+		});
+		
 		btnAnterior.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAnterior.setBounds(240, 358, 95, 39);
 		frmAgenda.getContentPane().add(btnAnterior);
 		
 		JButton btnProximo = new JButton(">");
+		btnProximo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				posicao++;
+				mostrarContato();
+			}
+		});
+		
 		btnProximo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnProximo.setBounds(373, 358, 95, 39);
 		frmAgenda.getContentPane().add(btnProximo);
 		
 		JButton btnUltimo = new JButton(">>");
+		btnUltimo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				posicao = agenda.size() - 1;
+				mostrarContato();
+			}
+		});
+		
 		btnUltimo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnUltimo.setBounds(506, 358, 95, 39);
 		frmAgenda.getContentPane().add(btnUltimo);
