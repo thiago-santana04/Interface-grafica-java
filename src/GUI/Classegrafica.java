@@ -14,16 +14,19 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class Classegrafica {
 
-	private JFrame frmAgenda;
-	private JTextField txtNome;
-	private JTextField txtTelefone;
-	private JTextField txtEndereco;
-	private JTextField txtEmail;
-	private JTextField txtCpf;
+	private static JFrame frmAgenda;
+	private static JTextField txtNome;
+	private static JTextField txtTelefone;
+	private static JTextField txtEndereco;
+	private static JTextField txtEmail;
+	private static JTextField txtCpf;
+	
+	private static JButton btnSalvar;
 	
 	private static ArrayList <Contato> agenda = new ArrayList<Contato>();
 
@@ -40,6 +43,10 @@ public class Classegrafica {
 				try {
 					Classegrafica window = new Classegrafica();
 					window.frmAgenda.setVisible(true);
+					if(agenda.size() > 0) {
+						posicao = 0;
+						mostrarContato();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -82,7 +89,7 @@ public class Classegrafica {
 	}
 	
 	//Mostrar contatos
-	private void mostrarContato() {
+	private static void mostrarContato() {
 		Contato c = agenda.get(posicao);
 		txtNome.setText(c.getNome());
 		txtTelefone.setText(c.getTelefone());
@@ -128,30 +135,35 @@ public class Classegrafica {
 		frmAgenda.getContentPane().add(lblNewLabel_4);
 		
 		txtNome = new JTextField();
+		txtNome.setEditable(false);
 		txtNome.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtNome.setBounds(186, 93, 243, 18);
 		frmAgenda.getContentPane().add(txtNome);
 		txtNome.setColumns(10);
 		
 		txtTelefone = new JTextField();
+		txtTelefone.setEditable(false);
 		txtTelefone.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtTelefone.setColumns(10);
 		txtTelefone.setBounds(186, 144, 128, 18);
 		frmAgenda.getContentPane().add(txtTelefone);
 		
 		txtEndereco = new JTextField();
+		txtEndereco.setEditable(false);
 		txtEndereco.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtEndereco.setColumns(10);
 		txtEndereco.setBounds(186, 195, 243, 18);
 		frmAgenda.getContentPane().add(txtEndereco);
 		
 		txtEmail = new JTextField();
+		txtEmail.setEditable(false);
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(186, 248, 243, 18);
 		frmAgenda.getContentPane().add(txtEmail);
 		
 		txtCpf = new JTextField();
+		txtCpf.setEditable(false);
 		txtCpf.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtCpf.setColumns(10);
 		txtCpf.setBounds(186, 300, 243, 18);
@@ -160,18 +172,26 @@ public class Classegrafica {
 		JButton btnNovo = new JButton("Novo");
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnSalvar.setEnabled(true);
+				btnNovo.setEnabled(false);
 				txtNome.setText("");
 				txtTelefone.setText("");
 				txtEndereco.setText("");
 				txtEmail.setText("");
 				txtCpf.setText("");
+				txtNome.setEditable(true);
+				txtTelefone.setEditable(true);
+				txtEndereco.setEditable(true);
+				txtEmail.setEditable(true);
+				txtCpf.setEditable(true);
 			}
 		});
 		btnNovo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnNovo.setBounds(654, 92, 95, 39);
 		frmAgenda.getContentPane().add(btnNovo);
 		
-		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar = new JButton("Salvar");
+		btnSalvar.setEnabled(false);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nome = txtNome.getText();
@@ -179,8 +199,21 @@ public class Classegrafica {
 				String endereco = txtEndereco.getText(); 
 				String email = txtEmail.getText();
 				String cpf = txtCpf.getText();
-				Contato c = new Contato(nome, telefone, endereco, email, cpf);
-				agenda.add(c);
+				if(nome.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "O nome do contato é obrigatório", "Erro!", JOptionPane.ERROR_MESSAGE);
+					posicao = 0;
+					mostrarContato();
+				} else {
+					Contato c = new Contato(nome, telefone, endereco, email, cpf);
+					agenda.add(c);
+				}
+				txtNome.setEditable(false);
+				txtTelefone.setEditable(false);
+				txtEndereco.setEditable(false);
+				txtEmail.setEditable(false);
+				txtCpf.setEditable(false);
+				btnNovo.setEnabled(true);
+				btnSalvar.setEnabled(false);
 			}
 		});
 		
@@ -214,11 +247,12 @@ public class Classegrafica {
 		JButton btnAnterior = new JButton("<");
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				posicao--;
-				mostrarContato();
+				if (posicao > 0) {
+					posicao--;
+					mostrarContato();
+				}
 			}
 		});
-		
 		btnAnterior.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnAnterior.setBounds(240, 358, 95, 39);
 		frmAgenda.getContentPane().add(btnAnterior);
@@ -226,8 +260,10 @@ public class Classegrafica {
 		JButton btnProximo = new JButton(">");
 		btnProximo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				posicao++;
-				mostrarContato();
+				if(posicao < agenda.size() - 1) {
+					posicao++;
+					mostrarContato();
+				}
 			}
 		});
 		
