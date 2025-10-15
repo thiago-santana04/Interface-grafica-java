@@ -4,6 +4,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -20,7 +25,7 @@ public class Classegrafica {
 	private JTextField txtEmail;
 	private JTextField txtCpf;
 	
-	ArrayList <Contato> agenda = new ArrayList<Contato>();
+	private static ArrayList <Contato> agenda = new ArrayList<Contato>();
 
 	//Indica a posição do contato visível na interface
 	private static int posicao = 0;
@@ -31,6 +36,7 @@ public class Classegrafica {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				lerFicheiro();
 				try {
 					Classegrafica window = new Classegrafica();
 					window.frmAgenda.setVisible(true);
@@ -48,6 +54,32 @@ public class Classegrafica {
 		initialize();
 	}
 
+	//ler do ficheiro de dados
+	private static void lerFicheiro() {
+		ObjectInputStream leituraFicheiro;
+		Contato c;
+		try {
+			leituraFicheiro = new ObjectInputStream(new FileInputStream("agenda.dat"));
+			do {
+				c = (Contato) leituraFicheiro.readObject();
+				agenda.add(c);
+			} while (c != null);
+		}catch (IOException exc) {}
+		catch (ClassNotFoundException el) {} 
+	}
+	
+	//guardar no ficheiro
+	private static void escreverFicheiro() {
+		ObjectOutputStream escritaFicheiro;
+		try {
+			escritaFicheiro = new ObjectOutputStream(new FileOutputStream("agenda.dat"));
+			for(int i=0; i<agenda.size(); i++)
+				escritaFicheiro.writeObject(agenda.get(i));
+			escritaFicheiro.close();
+		} catch (IOException exc) {
+			System.out.println("Erro na escrita de dados!");
+		}
+	}
 	
 	//Mostrar contatos
 	private void mostrarContato() {
@@ -159,6 +191,7 @@ public class Classegrafica {
 		JButton btnSair = new JButton("Sair");
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				escreverFicheiro();
 				System.exit(0);			}
 		});
 		

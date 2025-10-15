@@ -1,6 +1,8 @@
 package GUI;
 
-public class Contato {
+import java.io.Serializable;
+
+public class Contato implements Serializable{
 
 	//variáveis de instância
 	private String nome;
